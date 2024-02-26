@@ -8,6 +8,13 @@ Write-Host "Downloading..."
 Write-Host "Installing..."
 Start-Process $exePath -Wait -ArgumentList '/NORESTART /NOCANCEL /SP- /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS /COMPONENTS="icons,ext\reg\shellhere,assoc,assoc_sh" /LOG="C:\git-for-windows.log"'
 
+$datadog_url = "https://s3.amazonaws.com/ddagent-windows-stable/ddagent-cli-latest.msi"
+$datadog_dest = "C:\temp\ddagent-cli-latest.msi"
+$DD_API_KEY = "APIKEY"
+$HOSTNAME = "hostname"
+(New-Object Net.WebClient).DownloadFile($datadog_url, $datadog_dest)
+msiexec /i $datadog_dest /l*v C:\datadog_installation_log.txt /quiet APIKEY="$DD_API_KEY" HOSTNAME="$HOSTNAME" TAGS=`"$TAGS,COMMA,DELIMITED`
+
 
 New-Item -Path C:\inetpub\wwwroot\index.html -ItemType File -Force
 Add-Content -Path C:\inetpub\wwwroot\index.html "<font face = "Verdana" size = "5">"
