@@ -55,3 +55,9 @@ output "config_map_aws_auth" {
 output "kubeconfig" {
   value = local.kubeconfig
 }
+
+# save the kubernetes config in the file kubeconfig.yaml from the resource created in the previous step
+resource "local_file" "kubernetes_config" {
+  content = "${local.kubeconfig}"
+  filename = "aws-kubeconfig.yaml"
+}
